@@ -3,15 +3,74 @@
   <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+  <head> 
+<style type="text/css">
+* {/* for demo only*/
+    margin:0px;
+    padding:0px
+}
+html, body {
+    height:100%;/* needed to base 100% height on something known*/
+    background: #000000;
+    color: #00FF00;
+}
+.outer {
+    margin: auto;
+    min-height: 100%;
+    margin-top: 0px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.pane {
+  margin: 100px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+h2 {
+  display: flex;
+  display: block;
+  align-self: flex-start;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.letters {
+  width: 100%;
+  margin-top: 20px;
+  font-size: 500%;
+  text-align: center;
+  letter-spacing: 20px;
+  flex-wrap: wrap;
+  overflow: wrap;
+  word-wrap: break-word;
+}
+
+.letters span {
+
+}
+
+</style>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using node <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div id="console" class="outer">
+      <div id="output" class="pane">
+      </div>
+      <div id="input" class="pane">
+        <h2>Type Your Message</h2>
+        <div id="input-letters" class="letters">
+          <span>&nbsp;</span>
+        </div>
+      </div>
+    </div>
   </body>
 
+  <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js' type='text/javascript'></script>
   <script>
     // You can also require other files to run in this process
     require('./renderer.js')
