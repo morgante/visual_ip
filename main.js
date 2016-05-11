@@ -6,11 +6,19 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
+const ipcMain = require('electron').ipcMain;
+
 var _ = require("lodash");
+var Firebase = require("firebase");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
+
+var dataMessage = [];
+var lastEvent = null;
+
+const mySource = 2;
 
 function createWindow () {
   // Create the browser window.
@@ -55,7 +63,35 @@ function createWindow () {
       console.log('data is not a card', data);
     } else {
       console.log('load the card', id);
+      var dataRef = new Firebase(`https://vipneteverything.firebaseio.com/data/packets/${id}`);
+      dataRef.child("message").once("value", function(snapshot) {
+        console.log('snapshot', snapshot.val());
+        if (snapshot.val() !== null && snapshot.val().source !== mySource && snapshot.val().text) {
+          console.log('some other data');
+          lastEvent.sender.send('receive_data', snapshot.val());
+        } else {
+          if (dataMessage.length < 1) {
+            if (lastEvent) {
+              lastEvent.sender.send('alert', 'Please type a message before attempting to send it!');
+            }
+            return;
+          } else {
+            dataRef.set({
+              message: {
+                source: mySource,
+                text: dataMessage
+              }
+            });
+            lastEvent.sender.send('sent_input', 'Sent');
+          }
+        }
+      });
     }
+  });
+
+  ipcMain.on('set_input', function(event, arg) {
+    dataMessage = arg;
+    lastEvent = event;
   });
 }
 

@@ -1,4 +1,7 @@
 var _ = require("lodash");
+const ipcRenderer = require('electron').ipcRenderer;
+
+var globalLetters = [];
 
 function renderLetters(charcodes) {
 	var letters;
@@ -19,17 +22,44 @@ function renderLetters(charcodes) {
 		return "<span>" + code + "</span>";
 	});
 	$("#output-letters").html(html2);
+
+	ipcRenderer.send('set_input', charcodes);
+
+	$(".type").show();
+	$(".receive").hide();
+}
+
+function renderInput(charcodes) {
+	globalLetters = [];
+	renderLetters(charcodes);
+	$(".type").hide();
+	$(".receive").show();
 }
 
 $(document).ready(function() {
-	var letters = [];
 	$(document).on("keyup", function(evt) {
 		console.log("evt", evt);
 		if (evt.keyCode === 8) {
-			letters.pop();
+			globalLetters.pop();
 		} else if (evt.keyCode >= 65 && evt.keyCode <= 90) {
-			letters.push(evt.keyCode);
+			globalLetters.push(evt.keyCode);
 		}
-		renderLetters(letters);
+		renderLetters(globalLetters);
 	});
+	$(".receive").hide();
+});
+
+ipcRenderer.on('sent_input', function(event, arg) {
+  console.log(arg); // prints "pong"
+  renderLetters([]);
+});
+
+ipcRenderer.on('alert', function(event, arg) {
+  console.log(arg); // prints "pong"
+  alert(arg);
+});
+
+ipcRenderer.on('receive_data', function(event, arg) {
+  console.log('received', arg); // prints "pong"
+  renderInput(arg.text)
 });
