@@ -51,6 +51,7 @@ $(document).ready(function() {
 
 ipcRenderer.on('sent_input', function(event, arg) {
   console.log(arg); // prints "pong"
+  globalLetters = [];
   renderLetters([]);
 });
 
@@ -61,5 +62,5 @@ ipcRenderer.on('alert', function(event, arg) {
 
 ipcRenderer.on('receive_data', function(event, arg) {
   console.log('received', arg); // prints "pong"
-  renderInput(arg.text)
+  renderInput(arg.text);
 });

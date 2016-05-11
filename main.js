@@ -18,7 +18,7 @@ let mainWindow;
 var dataMessage = [];
 var lastEvent = null;
 
-const mySource = 2;
+const mySource = 1;
 
 function createWindow () {
   // Create the browser window.
