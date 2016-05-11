@@ -53,7 +53,7 @@ void loop() {
       cardid <<= 8;
       cardid |= uid[3];
       thisID = cardid;
-      if (thisID != lastID) {
+      if (thisID != lastID || 1) {
         Serial.println(cardid); // print the card number
       }
       lastID = thisID;

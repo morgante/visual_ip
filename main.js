@@ -17,6 +17,7 @@ let mainWindow;
 
 var dataMessage = [];
 var lastEvent = null;
+var lastCard;
 
 const mySource = 1;
 
@@ -58,12 +59,20 @@ function createWindow () {
   });
 
   port.on('data', function (data) {
+    if (data === lastCard) {
+      return;
+    } else {
+      lastCard = data;
+    }
     const id = parseInt(data, 10);
     if (_.isNaN(id)) {
       console.log('data is not a card', data);
     } else {
       console.log('load the card', id);
       var dataRef = new Firebase(`https://vipneteverything.firebaseio.com/data/packets/${id}`);
+      if (!lastEvent) {
+        return;
+      }
       dataRef.child("message").once("value", function(snapshot) {
         console.log('snapshot', snapshot.val());
         if (snapshot.val() !== null && snapshot.val().source !== mySource && snapshot.val().text) {
