@@ -16,7 +16,6 @@ html, body {
 }
 .outer {
     margin: auto;
-    min-height: 100%;
     margin-top: 0px;
     text-align: left;
     width: 100%;
@@ -24,7 +23,6 @@ html, body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    flex-wrap: wrap;
 }
 .pane {
   margin: 100px;
@@ -33,11 +31,6 @@ html, body {
   width: 100%;
 }
 h2 {
-  display: flex;
-  display: block;
-  align-self: flex-start;
-  text-align: center;
-  flex-wrap: wrap;
 }
 
 .letters {
@@ -60,6 +53,10 @@ h2 {
   <body>
     <div id="console" class="outer">
       <div id="output" class="pane">
+      <div id="output-letters" class="letters">
+          <span>&nbsp;</span>
+        </div>
+      </div>
       </div>
       <div id="input" class="pane">
         <h2>Type Your Message</h2>

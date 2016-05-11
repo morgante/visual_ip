@@ -1,8 +1,12 @@
+"use strict";
+
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const BrowserWindow = electron.BrowserWindow;
+
+var _ = require("lodash");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -11,7 +15,7 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    fullscreen: true
+    // fullscreen: true
   });
 
   // and load the index.html of the app.
@@ -23,6 +27,35 @@ function createWindow () {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
+  });
+
+  var serialport = require('serialport');
+  var SerialPort = serialport.SerialPort;
+  console.log("loading ports");
+  serialport.list(function (err, ports) {
+    ports.forEach(function(port) {
+      console.log(port.comName);
+      console.log(port.pnpId);
+      console.log(port.manufacturer);
+    });
+  });
+
+  var port = new SerialPort('/dev/cu.usbmodem1411', {
+    baudrate: 9600,
+    parser: serialport.parsers.readline('\n')
+  });
+
+  port.on('open', function () {
+    console.log('opened serial port');
+  });
+
+  port.on('data', function (data) {
+    const id = parseInt(data, 10);
+    if (_.isNaN(id)) {
+      console.log('data is not a card', data);
+    } else {
+      console.log('load the card', id);
+    }
   });
 }
 

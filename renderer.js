@@ -1,10 +1,11 @@
 var _ = require("lodash");
 
-function renderLetters(letters) {
-	if (letters.length < 1) {
+function renderLetters(charcodes) {
+	var letters;
+	if (charcodes.length < 1) {
 		letters = ["&nbsp;"];
 	} else {
-		letters = _.map(letters, function(code) {
+		letters = _.map(charcodes, function(code) {
 			var char = String.fromCharCode(code);
 			return char;
 		});
@@ -13,6 +14,11 @@ function renderLetters(letters) {
 		return "<span>" + letter + "</span>";
 	});
 	$("#input-letters").html(html);
+
+	var html2 = _.map(charcodes, function(code) {
+		return "<span>" + code + "</span>";
+	});
+	$("#output-letters").html(html2);
 }
 
 $(document).ready(function() {
