@@ -80,9 +80,10 @@ function createWindow () {
         }
         dataRef.child("message").once("value", function(snapshot) {
           console.log('snapshot', snapshot.val());
-          if (snapshot.val() !== null && snapshot.val().source !== mySource && snapshot.val().text) {
+          if (snapshot.val() !== null && snapshot.val().text) {
             console.log('some other data');
             lastEvent.sender.send('receive_data', snapshot.val());
+            dataRef.set(null);
           } else {
             if (dataMessage.length < 1) {
               if (lastEvent) {
