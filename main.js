@@ -19,12 +19,12 @@ var dataMessage = [];
 var lastEvent = null;
 var lastCard;
 
-const mySource = 1;
+const mySource = 2;
 
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    // fullscreen: true
+    fullscreen: true
   });
 
   // and load the index.html of the app.
@@ -49,7 +49,7 @@ function createWindow () {
     });
   });
 
-  var port = new SerialPort('/dev/cu.usbmodem1411', {
+  var port = new SerialPort('/dev/cu.usbmodem1421', {
     baudrate: 9600,
     parser: serialport.parsers.readline('\n')
   });

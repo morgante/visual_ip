@@ -53,6 +53,7 @@ ipcRenderer.on('sent_input', function(event, arg) {
   console.log(arg); // prints "pong"
   globalLetters = [];
   renderLetters([]);
+  alert("Your message has been sent.");
 });
 
 ipcRenderer.on('alert', function(event, arg) {
